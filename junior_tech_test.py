@@ -59,34 +59,58 @@ def average_pass_length_by_team(data, team_name):
     """
     Calculate the average pass length for the provided team to 1 decimal place
     """
-    
-    return
+    total_pass_length = 0
+    count = 0
+    filtered_team = filter_by_team(data, team_name)
+    for player in filtered_team:
+        if len(player['pass_length']) > 0:
+            count += 1
+            total_pass_length += float(player['pass_length'])
+    average_pass_length = total_pass_length / count
+    return round(average_pass_length,1)
 
 def filter_players_by_position(data, position_name):
     """
     Return a list of player names who play at the provided position.
     """
-    return
+    filtered_data = set()
+    for player in data:
+        if position_name == player['player_position_name']:
+            filtered_data.add(player['player_name'])
+            #returning a list fails test
+    return filtered_data 
 
 def count_successful_passes(data):
     """
     Count the number of successful passes (not considering pass outcome).
     """
-    return
+    pass_count = 0
+    for player in data:
+        if len(player['pass_success_probability']) > 0 and float(player['pass_success_probability']) > 0.55:
+            pass_count += 1
+
+    return pass_count
 
 def filter_by_period(data, period):
     """
     Return a list of events that occurred in the provided period (e.g., 1 or 2).
     """
-    return
+    filtered_data = []
+    for player in data:
+        if period == player['period']:
+            filtered_data.append(player)
+    return filtered_data
 
 def count_shots_by_player(data, player_name):
     """
     Count the number of shots taken by the provided player.
     """
-    return
+    shot_count = 0
+    for player in data:
+        if player['player_name'] == player_name and player['event_type_name'] == 'Shot':
+            shot_count += 1
+            
+    return shot_count
 
 
-# print(filter_by_team(read_csv_file('sample_data.csv'), 'Germany'))
-# print(read_csv_file('sample_data.csv')[0])
-# print(count_event_type_by_team(read_csv_file('sample_data.csv'), 'Germany', 'Pass'))
+# print(read_csv_file('sample_data.csv')[4])
